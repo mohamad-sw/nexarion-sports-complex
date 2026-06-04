@@ -110,7 +110,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.expander("About this project"):
+with st.expander("What is happening under the hood ??"):
     st.markdown(
         """
         #### Source Document
