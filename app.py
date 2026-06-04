@@ -30,7 +30,7 @@ class AnswerFromContext(dspy.Signature):
     """Answer the question using ONLY the context below.
 If you don't know, say "I don't have enough information." """
 
-    context: list[str] = dspy.InputField()
+    context: str = dspy.InputField(desc="relevant passages from the document, separated by ---")
     question: str = dspy.InputField()
     response: str = dspy.OutputField()
 
@@ -45,7 +45,8 @@ class RAG(dspy.Module):
         hypothesis = self.hypothesize(question=question).hypothetical_answer
         results = self.collection.query(query_texts=[hypothesis], n_results=5)
         context = results["documents"][0]
-        prediction = self.respond(context=context, question=question)
+        context_str = "\n\n---\n\n".join(context)
+        prediction = self.respond(context=context_str, question=question)
         return dspy.Prediction(response=prediction.response, context=context)
 
 
