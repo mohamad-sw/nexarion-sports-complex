@@ -196,12 +196,13 @@ for message in st.session_state.messages:
                         st.divider()
 
 only_intro = len(st.session_state.messages) == 1
-if only_intro:
+if only_intro and "pending_prompt" not in st.session_state:
     st.markdown("<br>", unsafe_allow_html=True)
     cols = st.columns(2)
     for i, suggestion in enumerate(SUGGESTIONS):
         if cols[i % 2].button(suggestion, use_container_width=True):
             st.session_state.pending_prompt = suggestion
+            st.rerun()
 
 chat_input = st.chat_input("Ask a question...")
 prompt = st.session_state.pop("pending_prompt", None) or chat_input
