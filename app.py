@@ -14,11 +14,12 @@ lm = dspy.LM(
 dspy.configure(lm=lm)
 
 
-def load_pdf_chunks(path: str, chunk_size: int = 500) -> list[str]:
+def load_pdf_chunks(path: str, chunk_size: int = 300, overlap: int = 50) -> list[str]:
     reader = PdfReader(path)
     text = "\n".join(page.extract_text() or "" for page in reader.pages)
     words = text.split()
-    return [" ".join(words[i : i + chunk_size]) for i in range(0, len(words), chunk_size)]
+    step = chunk_size - overlap
+    return [" ".join(words[i : i + chunk_size]) for i in range(0, len(words), step)]
 
 
 ef = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
@@ -32,7 +33,7 @@ collection.add(
 )
 
 
-def retrieve(query: str, k: int = 3) -> list[str]:
+def retrieve(query: str, k: int = 5) -> list[str]:
     results = collection.query(query_texts=[query], n_results=k)
     return results["documents"][0]
 
@@ -48,15 +49,19 @@ If you don't know, say "I don't have enough information." """
 
 class RAG(dspy.Module):
     def __init__(self):
+        # HyDE: generate a hypothetical answer whose embedding is closer to the
+        # target table row than the raw question embedding
+        self.hypothesize = dspy.ChainOfThought("question -> hypothetical_answer")
         self.respond = dspy.ChainOfThought(AnswerFromContext)
 
     def forward(self, question: str):
-        context = retrieve(question)
+        hypothesis = self.hypothesize(question=question).hypothetical_answer
+        context = retrieve(hypothesis)
         return self.respond(context=context, question=question)
 
 
 rag = RAG()
 
-prediction = rag(question="what is this document about?")
+prediction = rag(question="What is the target water temperature of the Olympic Training Pool?")
 print(prediction.response)
 print(lm.inspect_history(1))
