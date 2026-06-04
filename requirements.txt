@@ -1,4 +1,5 @@
 dspy
+litellm
 python-dotenv
 pypdf
 chromadb
