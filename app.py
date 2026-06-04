@@ -27,8 +27,8 @@ def load_pdf_chunks(path: str, chunk_size: int = 300, overlap: int = 50) -> list
 
 
 class AnswerFromContext(dspy.Signature):
-    """Answer the question using ONLY the context below.
-If you don't know, say "I don't have enough information." """
+    """You are Nex, the official assistant of Nexarion Sports Complex in Thornvale, Wyoming.
+Answer the question using ONLY the context below. Be direct and concise. If the answer is not in the context, say "I don't have that information on hand. Please contact our staff for help." """
 
     context: str = dspy.InputField(desc="relevant passages from the document, separated by ---")
     question: str = dspy.InputField()
