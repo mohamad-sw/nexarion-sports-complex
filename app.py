@@ -1,10 +1,12 @@
+import os
 import dspy
+from dotenv import load_dotenv
 
-# Connect to your local Ollama model
+load_dotenv()
+
 lm = dspy.LM(
-    model="ollama/gemma3:1b",
-    api_base="http://localhost:11434",
-    api_key="ollama"  # dummy key, required by DSPy but not used
+    model="groq/llama-3.1-8b-instant",
+    api_key=os.environ["GROQ_API_KEY"]
 )
 
 dspy.configure(lm=lm)
