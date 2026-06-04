@@ -45,7 +45,8 @@ class RAG(dspy.Module):
         hypothesis = self.hypothesize(question=question).hypothetical_answer
         results = self.collection.query(query_texts=[hypothesis], n_results=5)
         context = results["documents"][0]
-        return self.respond(context=context, question=question)
+        prediction = self.respond(context=context, question=question)
+        return dspy.Prediction(response=prediction.response, context=context)
 
 
 @st.cache_resource
@@ -185,6 +186,13 @@ SUGGESTIONS = [
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+        if message["role"] == "assistant" and message.get("context"):
+            with st.expander("Retrieved chunks"):
+                for i, chunk in enumerate(message["context"], 1):
+                    st.markdown(f"**Chunk {i}**")
+                    st.caption(chunk)
+                    if i < len(message["context"]):
+                        st.divider()
 
 only_intro = len(st.session_state.messages) == 1
 if only_intro:
@@ -205,7 +213,13 @@ if prompt:
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = rag(question=prompt).response
-        st.markdown(response)
+            result = rag(question=prompt)
+        st.markdown(result.response)
+        with st.expander("Retrieved chunks"):
+            for i, chunk in enumerate(result.context, 1):
+                st.markdown(f"**Chunk {i}**")
+                st.caption(chunk)
+                if i < len(result.context):
+                    st.divider()
 
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": result.response, "context": result.context})
