@@ -1,5 +1,7 @@
 # Nexarion Sports Complex — RAG Chatbot
 
+**[Live Demo](https://nexarion-sports-complex.streamlit.app/)**
+
 ## Source Document
 
 The knowledge base is a fictional handbook for **Nexarion Sports Complex**, a made-up multi-sport facility in Thornvale, Wyoming. It covers 12 facility zones, membership tiers and fees, operating hours, rules and policies, staff contacts, and parking.
