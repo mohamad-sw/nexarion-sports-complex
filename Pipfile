@@ -9,6 +9,7 @@ python-dotenv = "*"
 pypdf = "*"
 chromadb = "*"
 sentence-transformers = "*"
+streamlit = "*"
 
 [dev-packages]
 
