@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import dspy
 import chromadb
-from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 from pypdf import PdfReader
 from dotenv import load_dotenv
 
@@ -51,7 +51,7 @@ class RAG(dspy.Module):
 @st.cache_resource
 def _get_collection():
     chunks = load_pdf_chunks("data.pdf")
-    ef = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
+    ef = DefaultEmbeddingFunction()
     client = chromadb.EphemeralClient()
     collection = client.get_or_create_collection("pdf_docs", embedding_function=ef)
     collection.add(documents=chunks, ids=[f"chunk_{i}" for i in range(len(chunks))])
