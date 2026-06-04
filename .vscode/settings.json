@@ -9,7 +9,7 @@
     "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
     "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
     "php": "php",
-    "python": "/Users/neonlearn/.local/share/virtualenvs/chatbot-1fkDyI9R/bin/python3 -u",
+    "python": "/Users/neonlearn/.local/share/virtualenvs/chatbot-1fkDyI9R/bin/streamlit run app.py --server.runOnSave true",
     "perl": "perl",
     "perl6": "perl6",
     "ruby": "ruby",

@@ -1,1 +1,4 @@
 .env
+.vscode
+.streamlit/secrets.toml
+tempCodeRunnerFile.py

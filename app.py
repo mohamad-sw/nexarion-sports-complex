@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY")
+
 INTRO = (
     "**Hi! I'm the Nexarion Sports Complex assistant.** "
     "I can answer questions about our facilities, memberships, fees, schedules, and rules. "
@@ -58,7 +60,7 @@ def _get_collection():
 
 @st.cache_resource
 def _get_lm():
-    lm = dspy.LM(model="groq/llama-3.1-8b-instant", api_key=os.environ["GROQ_API_KEY"])
+    lm = dspy.LM(model="groq/llama-3.1-8b-instant", api_key=GROQ_API_KEY)
     dspy.configure(lm=lm)
     return lm
 

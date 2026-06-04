@@ -1,0 +1,6 @@
+dspy-ai
+python-dotenv
+pypdf
+chromadb
+sentence-transformers
+streamlit
