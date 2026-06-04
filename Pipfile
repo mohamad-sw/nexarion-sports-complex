@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 dspy = "*"
 python-dotenv = "*"
+pypdf = "*"
+chromadb = "*"
+sentence-transformers = "*"
 
 [dev-packages]
 
