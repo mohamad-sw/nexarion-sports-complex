@@ -202,7 +202,6 @@ if only_intro:
     for i, suggestion in enumerate(SUGGESTIONS):
         if cols[i % 2].button(suggestion, use_container_width=True):
             st.session_state.pending_prompt = suggestion
-            st.rerun()
 
 chat_input = st.chat_input("Ask a question...")
 prompt = st.session_state.pop("pending_prompt", None) or chat_input
